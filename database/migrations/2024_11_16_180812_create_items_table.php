@@ -17,7 +17,7 @@ return new class extends Migration
             $table->float('price');
             $table->boolean('is_available');
             $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });

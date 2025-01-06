@@ -8,7 +8,7 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class CategoryControler extends Controller
+class CategoryController extends Controller
 {
     public function index()
     {
@@ -26,7 +26,7 @@ class CategoryControler extends Controller
     {
         $category = Category::create([
             'name' => $request->name,
-            'parent_category' => $request->parent_category,
+            'category_id' => $request->parent_category,
             'created_by' => auth()->id(),
         ]);
 
@@ -47,7 +47,7 @@ class CategoryControler extends Controller
     {
         $category->update([
             'name' => $request->name,
-            'parent_category' => $request->parent_category,
+            'category_id' => $request->parent_category,
         ]);
 
         return new CategoryResource($category);

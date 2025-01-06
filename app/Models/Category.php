@@ -15,6 +15,11 @@ class Category extends Model
 
     public function parentCategory():BelongsTo
     {
-        return $this->belongsTo(self::class);
+        return $this->belongsTo(self::class, 'category_id');
+    }
+
+    public function createdBy():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

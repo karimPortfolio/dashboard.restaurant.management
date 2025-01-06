@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('email');
-            $table->string('address');
-            $table->string('notes');
+            $table->text('address');
+            $table->longText('notes');
             $table->foreignId('created_by')->constrained('users');
             $table->softDeletes();
             $table->timestamps();

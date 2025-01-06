@@ -1,0 +1,99 @@
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import { api } from "@/boot/api";
+
+
+export const useAuthStore = defineStore("auth", () => {
+
+  const user = ref(null);
+  const authenticated = ref(false);
+
+
+  const loadingPromise = ref(null);
+  const logoutPromise = ref(null);
+  const loginPromise = ref(null);
+
+  const errorMessages = ref(null);
+
+  const fetchProfile = async () => {
+
+    if (user.value !== null) return;
+
+    if (loadingPromise.value) return loadingPromise.value;
+
+    try {
+      loadingPromise.value = await api.get("me");
+      user.value = loadingPromise.value.data;
+      authenticated.value = true;
+    }
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      loadingPromise.value = null;
+    }
+  };
+
+  const logout = async () => {
+    if (logoutPromise.value) return logoutPromise.value;
+    try {
+      logoutPromise.value = new Promise((resolve, reject) => {
+        api
+          .post("logout")
+          .then((response) => {
+            user.value = null;
+            authenticated.value = false;
+            window.location.href = import.meta.env.VITE_LOGIN_URL;
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    }
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      logoutPromise.value = null;
+    }
+  };
+
+  const login = async (credentials, redirectTo) => {
+    if (loginPromise.value) return loginPromise.value;
+    try {
+      loginPromise.value = new Promise((resolve, reject) => {
+        api
+          .post("login", credentials)
+          .then((response) => {
+            authenticated.value = true;
+            window.location.href = redirectTo;
+            resolve(response);
+          })
+          .catch((error) => {
+            if (error.response?.status === 422) errorMessages.value = error.response.data.errors;
+            reject(error);
+          });
+      });
+    }
+    catch (err) {
+      if (err.response?.status === 422) errorMessages.value = err.response.data.errors;
+      console.log(err);
+    }
+    finally {
+      loginPromise.value = null;
+    }
+  };
+
+  return {
+    user,
+    authenticated,
+    errorMessages,
+    fetchProfile,
+    logout,
+    login
+  };
+});
+
+
+
