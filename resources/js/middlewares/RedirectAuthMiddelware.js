@@ -6,6 +6,8 @@ export async function RedirectAuthMiddeleware({ to, next }) {
   
   await authStore.fetchProfile();
 
+  console.log(authStore.authenticated);
+
   if (authStore.authenticated) {
     return next({ name: "home" });
   }

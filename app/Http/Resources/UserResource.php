@@ -18,8 +18,9 @@ class UserResource extends JsonResource
             'id' => $this->whenHas('id'),
             'name' => $this->whenHas('name'),
             'email' => $this->whenHas('email'),
-            // 'active' => $this->whenHas('grant_access'),
-            // 'photo' => $this->whenHas('photo', fn($photo) => $this->thumbnailUrl),
+            'active' => $this->whenHas('grant_access'),
+            'role' => $this->whenHas('role', fn ($v) => $v->toArray()),
+            'photo' => $this->whenHas('photo', fn($photo) => $this->thumbnailUrl),
         ];
     }
 }

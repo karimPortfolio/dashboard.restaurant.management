@@ -48,6 +48,7 @@ import { api } from "@/boot/api";
 import { Cookies, useQuasar } from "quasar";
 import { useAuthStore } from "@/stores/auth";
 import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
 
 const credentials = ref({});
 const loading = ref(false);
@@ -58,7 +59,7 @@ const route = useRoute();
 
 const $q = useQuasar();
 
-const { errorMessages, login } = useAuthStore();
+const authStore = useAuthStore();
 
 const handleAuth = async () => {
     try {
@@ -76,10 +77,10 @@ const handleAuth = async () => {
 
 const handleLogin = async () => {
     try {
+        await handleAuth();
         const redirectTo = route.query.redirect_to;
-        await login(credentials.value, redirectTo);
+        await authStore.login(credentials.value, redirectTo);
     } catch (err) {
-        console.log(err.response);
         if (err.response?.status === 422) {
             messages.value = err.response.data.errors;
         }
@@ -96,16 +97,17 @@ const handleLogin = async () => {
 };
 
 watch(
-    () => errorMessages,
+    () => authStore.errorMessages,
     (newErrorMessages) => {
         if (newErrorMessages) {
-            console.log(newErrorMessages); 
             messages.value = newErrorMessages;
+            console.log(newErrorMessages);
+            $q.notify({
+                message: "Error",
+                caption: messages.value,
+                type: "negative",
+            });
         }
     }
 );
-
-onMounted(() => {
-    handleAuth();
-});
 </script>

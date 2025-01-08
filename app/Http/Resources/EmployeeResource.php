@@ -22,7 +22,7 @@ class EmployeeResource extends JsonResource
             'email'=> $this->whenHas('email'),
             'role'=> $this->whenHas('role'),
             'salary'=> $this->whenHas('salary'),
-            'status'=> $this->whenHas('status'),
+            'status'=> $this->whenHas('status', fn ($v) => $v->toArray()),
             'created_by' => $this->whenLoaded('createdBy'),
             'updated_by'=> $this->whenLoaded('updatedBy'),
             'created_at'=> $this->whenHas('created_at', fn ($d) => Carbon::parse($d)->diffForHumans()),

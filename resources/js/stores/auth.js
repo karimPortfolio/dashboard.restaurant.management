@@ -1,12 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { api } from "@/boot/api";
+import { useQuasar } from "quasar";
 
 
 export const useAuthStore = defineStore("auth", () => {
 
   const user = ref(null);
   const authenticated = ref(false);
+
+  const $q = useQuasar();
 
 
   const loadingPromise = ref(null);
@@ -67,11 +70,17 @@ export const useAuthStore = defineStore("auth", () => {
           .post("login", credentials)
           .then((response) => {
             authenticated.value = true;
-            window.location.href = redirectTo;
+            if (redirectTo) window.location.href = redirectTo;
+            window.location.href = "/";
             resolve(response);
           })
           .catch((error) => {
             if (error.response?.status === 422) errorMessages.value = error.response.data.errors;
+            $q.notify({
+              message: "Error",
+              caption: error.response.data?.message,
+              type: "negative",
+          });
             reject(error);
           });
       });

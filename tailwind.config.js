@@ -31,7 +31,11 @@ export default {
         '1xs': '12px',
       },
       colors: {
-        primary: "#1b75bb",
+        primary: {
+          800: "#025864",
+          300: "#8ababf",
+          50: "#b4c8cb38"
+        },
         danger: colors.red[500],
       },
     },
