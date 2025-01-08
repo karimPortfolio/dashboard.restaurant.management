@@ -1,7 +1,7 @@
 <template>
-    <div class="mt-auto mb-2">
+    <div class="mb-2 p-2">
         <q-card
-            class="dark:bg-slate-700 bg-gray-50 shadow-none flex flex-nowrap items-center gap-4 p-2 py-3 m-2"
+            class="dark:bg-slate-700 overflow-hidden bg-gray-50 shadow-none flex flex-nowrap items-center gap-4 p-2 py-3 w-full"
         >
             <q-card-section class="p-0">
                 <q-avatar size="lg">
@@ -13,11 +13,11 @@
                     />
                 </q-avatar>
             </q-card-section>
-            <q-card-section class="p-0">
+            <q-card-section class="p-0 truncate">
                 <div class="text-sm font-medium">
                     {{ user?.name }}
                 </div>
-                <div class="text-xs dark:text-white text-grey-8">
+                <div class="text-xs dark:text-gray-400 text-grey-8 truncate">
                     {{ user?.email }}
                 </div>
             </q-card-section>
@@ -49,7 +49,7 @@
                             </div>
                             <!-- ==== AVATAR === -->
                             <!-- ==== INFO === -->
-                            <div>
+                            <div class="overflow-hidden" >
                                 <div class="flex items-center gap-3">
                                     <div class="text-sm font-medium">
                                         {{ user?.name }}
@@ -62,8 +62,8 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="text-xs text-grey-8">
-                                    {{ user?.email }}
+                                <div class="text-xs dark:text-gray-400 text-grey-8">
+                                    {{ user?.email }}                        
                                 </div>
                             </div>
                             <!-- ==== INFO === -->

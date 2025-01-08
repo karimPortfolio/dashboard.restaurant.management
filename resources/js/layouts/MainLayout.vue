@@ -29,29 +29,25 @@
                             dense
                             placeholder="Search..."
                             outlined
+                            ref="searchInput"
                         >
                             <template v-slot:prepend>
                                 <q-icon name="sym_r_search" size="xs" />
                             </template>
-                            <!-- <template v-slot:append>
-                                <div class="flex gap-1">
-                                    <q-btn
-                                        outline
-                                        class="h-[10px] w-[35px] bg-gray-200 dark:bg-gray-600 dark:text-white text-dark"
-                                    >
-                                        <q-icon
-                                            name="sym_r_keyboard_command_key"
-                                            class="text-base"
-                                        />
-                                    </q-btn>
-                                    <q-btn
-                                        outline
-                                        class="h-[8px] w-[35px] dark:bg-gray-600 dark:text-white bg-gray-200 text-dark"
-                                    >
-                                        <span class="text-sm" >K</span>
-                                    </q-btn>
+                            <template v-slot:append>
+                                <div class="inline-flex space-x-1 self-center">
+                                    <ShortcutButton>
+                                        <template #content >
+                                            <q-icon name="sym_r_keyboard_command_key" class="text-sm" />
+                                        </template>
+                                    </ShortcutButton>
+                                    <ShortcutButton>
+                                        <template #content >
+                                            <span class="text-sm">K</span>
+                                        </template>
+                                    </ShortcutButton>
                                 </div>
-                            </template> -->
+                            </template>
                         </q-input>
                     </div>
                     <!-- ============== SEARCH BAR =============== -->
@@ -92,7 +88,7 @@
                 show-if-above
                 :width="290"
                 :breakpoint="400"
-                class="shadow-md dark:shadow-slate-600 z-10 h-screen flex flex-col"
+                class="shadow-md dark:shadow-slate-600 z-10 h-screen flex flex-col flex-nowrap overflow-hidden"
             >
                 <div class="flex flex-nowrap items-center p-3 pt-5 ps-4 pb-2">
                     <div class="text-center md:text-start">
@@ -136,7 +132,7 @@
                 <!-- </q-scroll-area> -->
 
                 <!-- ========== PROFILE DROPDOWN =========== -->
-                <ProfileDropdown :user="user" />
+                <ProfileDropdown class="mt-auto" :user="user" />
             </q-drawer>
 
             <!-- ========== DRAWER =========== -->
@@ -154,6 +150,7 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 import ProfileDropdown from "./partials/ProfileDropdown.vue";
 import { useQuasar } from "quasar";
+import ShortcutButton from "../components/Buttons/ShortcutButton.vue";
 
 const drawer = ref(true);
 
@@ -195,6 +192,7 @@ const handleDarkToggling = () => {
 onMounted(() => {
     user.value = authStore.user.data;
 });
+
 </script>
 <style scoped>
 :deep(.q-field--outlined .q-field__control) {
