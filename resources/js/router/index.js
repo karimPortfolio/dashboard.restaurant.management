@@ -11,7 +11,15 @@ const router = createRouter({
             meta: {
                 middleware: [RedirectAuthMiddeleware],
             },
-            component: () => import("@/views/auth/Login.vue"),
+            component: () => import("@/views/auth/LoginView.vue"),
+        },
+        {
+            path: "/auth/forget-password",
+            name: "auth.forget.password",
+            meta: {
+                middleware: [RedirectAuthMiddeleware],
+            },
+            component: () => import("@/views/auth/ForgetPasswordView.vue"),
         },
         {
             path: "/",
