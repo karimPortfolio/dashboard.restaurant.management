@@ -23,9 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')
     ->group(function () {
 
-        Route::post('login', [AuthController::class, 'login'])->name('api.login');
-        Route::post('register', [AuthController::class, 'register'])->name('api.register');
-        Route::post('logout', [AuthController::class, 'logout'])->name('api.logout');
+        // Route::post('login', [AuthController::class, 'login'])->name('api.login');
+        // Route::post('register', [AuthController::class, 'register'])->name('api.register');
+        // Route::post('logout', [AuthController::class, 'logout'])->name('api.logout');
 
         Route::middleware('auth:sanctum')->group(function () {
 

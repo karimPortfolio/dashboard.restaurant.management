@@ -66,6 +66,7 @@
                         </q-btn>
                     </div>
                     <!-- ============== NOTIFICATIONS =============== -->
+
                     <div>
                         <q-btn
                             dense
@@ -88,7 +89,7 @@
                 show-if-above
                 :width="290"
                 :breakpoint="400"
-                class="shadow-md dark:shadow-slate-600 z-10 h-screen flex flex-col flex-nowrap overflow-hidden"
+                class="shadow-md dark:shadow-slate-600 z-10 h-screen flex flex-col flex-nowrap overflow-hidden "
             >
                 <div class="flex flex-nowrap items-center p-3 pt-5 ps-4 pb-2">
                     <div class="text-center md:text-start">
@@ -114,6 +115,7 @@
                         active-class="bg-primary-50 !dark:text-primary-300 !text-primary-800"
                         clickable
                         v-ripple
+                        :exact="item.exact ? true : false"
                         :to="item.route"
                     >
                         <div class="w-full p-3 flex">
@@ -161,10 +163,12 @@ const drawerItems = [
         label: "Home",
         icon: "sym_r_home",
         route: { name: "home" },
+        exact: true
     },
     {
         label: "Employees",
         icon: "sym_r_group",
+        route: { name: "employees.index" },
     },
     {
         label: "Categories",

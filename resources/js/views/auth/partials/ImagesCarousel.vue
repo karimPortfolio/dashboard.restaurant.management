@@ -4,8 +4,8 @@
         v-model="slide"
         infinite
         :autoplay="autoplay"
-        transition-prev="slide-right"
-        transition-next="slide-left"
+        transition-prev="fade"
+        transition-next="fade"
         @mouseenter="autoplay = false"
         @mouseleave="autoplay = true"
         class="w-full h-full rounded-lg"

@@ -64,7 +64,7 @@
                     <q-form @submit="handleLogin">
                         <q-input
                             v-model="credentials.email"
-                            label="Your Email"
+                            label="Email"
                             lazy-rules
                             :error-message="messages.email?.[0]"
                             :error="'email' in messages"
@@ -74,9 +74,9 @@
                         <div>
                             <q-btn
                                 label="Send Password Reset Link"
-                                @click="handleLogin"
-                                :loading="loading"
+                                @click="handleForgetPassword"
                                 class="w-full dark:text-dark bg-primary text-white"
+                                :loading="loading"
                             />
                         </div>
                     </q-form>
@@ -87,31 +87,24 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { api } from "@/boot/api";
 import { useQuasar } from "quasar";
 import { useAuthStore } from "@/stores/auth";
-import { useRoute } from "vue-router";
 import SettingsDropdown from "./partials/SettingsDropdown.vue";
 import ImagesCarousel from "./partials/ImagesCarousel.vue";
 
-const credentials = ref({
-    remember: false,
-});
+const credentials = ref({});
 const loading = ref(false);
 
 const messages = ref({});
-
-const route = useRoute();
 
 const $q = useQuasar();
 
 const authStore = useAuthStore();
 
-const handleLogin = async () => {
+const handleForgetPassword = async () => {
+    loading.value = true;
     try {
-        await handleAuth();
-        const redirectTo = route.query.redirect_to;
-        await authStore.login(credentials.value, redirectTo);
+        await authStore.forgotPassword(credentials.value);
     } catch (err) {
         if (err.response?.status === 422) {
             messages.value = err.response.data.errors;

@@ -22,6 +22,7 @@ class EmployeeResource extends JsonResource
             'email'=> $this->whenHas('email'),
             'role'=> $this->whenHas('role'),
             'salary'=> $this->whenHas('salary'),
+            'photo' => $this->whenHas('photo'),
             'status'=> $this->whenHas('status', fn ($v) => $v->toArray()),
             'created_by' => $this->whenLoaded('createdBy'),
             'updated_by'=> $this->whenLoaded('updatedBy'),

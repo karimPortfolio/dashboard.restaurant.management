@@ -18,3 +18,7 @@ Route::get('{any}', function () {
 })
 ->where('any', '.*')
 ->where('any', '^(?!api).*$');
+
+Route::get('/auth/reset-password/{token}', function ($token) {
+    return view('index', ['token'=> $token]);
+})->name("password.reset");

@@ -6,6 +6,34 @@ const router = createRouter({
     history: createWebHistory(), // createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
+            path: "/",
+            name: "dashboard",
+            component: () => import("@/views/HomeView.vue"),
+            meta: {
+                middleware: [AuthMiddleware],
+            },
+            children: [
+                {
+                    path: "",
+                    component: () => RouterView,
+                    children: [
+                        {
+                            path: "",
+                            name: "home",
+                            alias: "/home",
+                            component: () => import("@/views/home/HomeView.vue"),                        
+                        },
+                        {
+                            path: "employees",
+                            name: "employees.index",
+                            component: () => import("@/views/employees/EmployeesView.vue"),                        
+                        },
+                    ]
+                },
+                
+            ],
+        },
+        {
             path: "/auth/login",
             name: "auth.login",
             meta: {
@@ -22,27 +50,12 @@ const router = createRouter({
             component: () => import("@/views/auth/ForgetPasswordView.vue"),
         },
         {
-            path: "/",
-            name: "dashboard",
-            component: () => import("@/views/HomeView.vue"),
+            path: "/auth/reset-password/:token",
+            name: "auth.reset.password",
             meta: {
-                middleware: [AuthMiddleware],
+                middleware: [RedirectAuthMiddeleware],
             },
-            children: [
-                {
-                    path: "",
-                    component: () => RouterView,
-                    children: [
-                        {
-                            path: "/",
-                            name: "home",
-                            alias: "home",
-                            component: () => import("@/views/home/HomeView.vue"),                        
-                        },
-                    ]
-                },
-                
-            ],
+            component: () => import("@/views/auth/ResetPasswordView.vue"),
         },
     ],
 });
