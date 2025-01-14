@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EmployeePosition;
 use App\Enums\EmployeeStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +25,11 @@ class EmployeeFactory extends Factory
             "role"=> "user",
             "salary"=> $this->faker->numberBetween(1,10),
             "status"=> EmployeeStatus::ACTIVE->value,
+            "position" => EmployeePosition::WAITER,
+            "cnss_number"=> $this->faker->unique()->randomNumber(9),
+            "cin_number"=> "KB{$this->faker->unique()->randomNumber(6)}",
             "created_by"=> 1,
+            "joining_date"=> $this->faker->dateTimeThisYear,
         ];
     }
 }

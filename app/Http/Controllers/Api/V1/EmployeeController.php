@@ -17,8 +17,10 @@ class EmployeeController extends Controller
             'createdBy:id,name',
             'updatedBy:id,name',
         ])
+        ->orderBy('updated_by', 'desc')
         ->get();
         
+        $employees->each( fn($employee) => $employee->append('full_name'));
         
         return EmployeeResource::collection($employees);
     }
@@ -26,12 +28,16 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         $employee = Employee::create([
-            'full_name' => $request->validated('full_name'),
+            'first_name' => $request->validated('first_name'),
+            'last_name' => $request->validated('last_name'),
             'email'=> $request->validated('email'),
             'phone'=> $request->validated('phone'),
-            'role'=> $request->validated('role'),
             'salary'=> $request->validated('salary'),
             'status'=> $request->validated('status'),
+            'cin_number'=> $request->validated('cin_number'),
+            'cnss_number'=> $request->validated('cnss_number'),
+            'joining_date'=> $request->validated('joining_date'),
+            'position'=> $request->validated('position'),
             'created_by' => auth()->id(),
         ]);
 
@@ -45,18 +51,24 @@ class EmployeeController extends Controller
             'updatedBy:id,name',
         ]);
 
+        $employee->append('full_name');
+
         return new EmployeeResource($employee);
     }
 
     public function update(EmployeeRequest $request, Employee $employee)
     {
         $employee->update([
-            'full_name' => $request->validated('full_name'),
+            'first_name' => $request->validated('first_name'),
+            'last_name' => $request->validated('last_name'),
             'email'=> $request->validated('email'),
             'phone'=> $request->validated('phone'),
-            'role'=> $request->validated('role'),
             'salary'=> $request->validated('salary'),
             'status'=> $request->validated('status'),
+            'cin_number'=> $request->validated('cin_number'),
+            'cnss_number'=> $request->validated('cnss_number'),
+            'joining_date'=> $request->validated('joining_date'),
+            'position'=> $request->validated('position'),
             'updated_by' => auth()->id(),
         ]);
 
@@ -69,5 +81,6 @@ class EmployeeController extends Controller
 
         return response()->noContent();
     }
+
 
 }

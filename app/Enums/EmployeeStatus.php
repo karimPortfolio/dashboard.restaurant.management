@@ -23,8 +23,8 @@ enum EmployeeStatus: string implements Arrayable
     public function color(): string
     {
         return match ($this) {
-            self::INACTIVE => 'red',
-            self::ACTIVE => 'green',
+            self::INACTIVE =>  'negative',
+            self::ACTIVE => 'positive',
         };
     }
 

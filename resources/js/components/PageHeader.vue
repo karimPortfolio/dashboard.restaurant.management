@@ -16,7 +16,7 @@
                 :icon="actionIcon"
                 :label="actionLabel"
                 @click="action"
-                class="dark:bg-primary-300 bg-primary-800 dark:text-black text-white"
+                class="dark:bg-primary-300 bg-primary-800 dark:text-slate-800 text-white"
             />
         </div>
     </div>
