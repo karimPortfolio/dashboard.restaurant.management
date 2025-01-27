@@ -39,6 +39,7 @@ class EmployeeRequest extends FormRequest
             'cnss_number'=> 'required|string|max:255',
             'cin_number'=> 'required|string|max:255',
             'joining_date'=> 'required|date',
+            'photo' => 'nullable|image|max:2048|mimes:jpeg,png,jpg',
             'position'=> [
                 'required',
                 'string',

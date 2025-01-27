@@ -16,11 +16,12 @@ class EmployeeController extends Controller
         ->with([
             'createdBy:id,name',
             'updatedBy:id,name',
+            'media'
         ])
-        ->orderBy('updated_by', 'desc')
+        ->orderBy('updated_at', 'desc')
         ->get();
-        
-        $employees->each( fn($employee) => $employee->append('full_name'));
+
+        $employees->each( fn ($employee) => $employee->append('full_name'));
         
         return EmployeeResource::collection($employees);
     }
@@ -41,6 +42,13 @@ class EmployeeController extends Controller
             'created_by' => auth()->id(),
         ]);
 
+        if ($request->hasFile('photo'))
+        {
+            $employee->addMediaFromRequest('photo')
+            ->withResponsiveImages()
+            ->toMediaCollection('employees-photo');
+        }
+
         return new EmployeeResource($employee);
     }
 
@@ -50,6 +58,8 @@ class EmployeeController extends Controller
             'createdBy:id,name',
             'updatedBy:id,name',
         ]);
+
+        $employee->loadMedia('employees-photo');
 
         $employee->append('full_name');
 
@@ -72,11 +82,20 @@ class EmployeeController extends Controller
             'updated_by' => auth()->id(),
         ]);
 
+        if ($request->hasFile('photo'))
+        {
+            $employee->clearMediaCollection('employees-photo');
+            $employee->addMediaFromRequest('photo')
+            ->withResponsiveImages()
+            ->toMediaCollection('employees-photo');
+        }
+
         return new EmployeeResource($employee);
     }
 
     public function destroy(Employee $employee)
     {
+        $employee->clearMediaCollection('employees-photo');
         $employee->delete();
 
         return response()->noContent();

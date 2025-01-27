@@ -26,7 +26,10 @@ class EmployeeResource extends JsonResource
             'role'=> $this->whenHas('role'),
             'salary'=> $this->whenHas('salary'),
             'converted_salary'=> $this->whenHas('salary', fn ($v) => Number::currency($v, 'MAD')),
-            'photo' => $this->whenHas('photo'),
+            'photo' => $this->whenLoaded('media', function() {
+                $media = $this->getFirstMedia('employees-photo');
+                return $media ? $media->getFullUrl() : null;
+             }),
             'status'=> $this->whenHas('status', fn ($v) => $v->toArray()),
             'position'=> $this->whenHas('position', fn ($v) => $v->toArray()),
             'cnss_number' => $this->whenHas('cnss_number'),

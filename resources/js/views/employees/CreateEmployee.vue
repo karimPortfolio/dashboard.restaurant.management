@@ -12,6 +12,22 @@
                     @submit.prevent.self="handleCreate"
                     class="q-gutter-md"
                 >
+                    <!-- ====== EMPLOYEE PHOTO ===== -->
+                    <div class="flex flex-col justify-center items-center" >
+                        <q-avatar class="w-20 h-20">
+                            <q-img :src="newEmployee.photo ?? '/img/avatar.jpg'" />
+                        </q-avatar>
+                        <div>
+                            <q-btn
+                                flat
+                                icon="sym_r_photo_camera"
+                                class="ml-4 rounded-full bg-gray-500 text-white dark:bg-gray-50 dark:text-black relative bottom-8 -right-6"
+                                padding="xs xs"
+                                @click="openFileSelector"
+                            />
+                        </div>
+                    </div>
+                    <!-- ====== EMPLOYEE PHOTO ===== -->
                     <!-- ==== FIRST NAME & LAST NAME ==== -->
                     <div class="grid sm:grid-cols-2 gap-3">
                         <div>
@@ -178,18 +194,36 @@
     </q-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useResourceCreate } from "@/composables/useResourceCreate";
 import CustomSelect from "@/components/CustomSelect.vue";
+import { useFileDialog } from "@vueuse/core";
+
 
 const emit = defineEmits(["created"]);
 const open = defineModel("open");
 
 const newEmployee = ref({});
 
-const { create, creating, validation } = useResourceCreate("employees");
+const { create, creating, validation } = useResourceCreate("employees", {
+    config: {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    },
+});
+
+// only images jpeg png jpg
+const { files, open: openFileSelector, reset } = useFileDialog({
+  multiple: false,
+  accept: {
+    "image/jpeg": [".jpg", ".jpeg", ".png"],
+    "application/msword": [".jpg", ".png", ".jpeg"],
+  },
+});
 
 const handleCreate = async () => {
+    newEmployee.value.photo = files.value[0];
     await create(newEmployee.value);
     emit("created");
 };
@@ -199,4 +233,11 @@ const handleClose = () => {
     validation.value = {};
     open.value = false;
 };
+
+watch( () => files.value, (value) => {
+    if (files.value && files.value.length) {
+        newEmployee.value.photo = URL.createObjectURL(files.value[0]);
+    }
+});
+
 </script>

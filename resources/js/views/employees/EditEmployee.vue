@@ -12,6 +12,23 @@
                     @submit.prevent.self="handleUpdate"
                     class="q-gutter-md"
                 >
+                    <!-- ====== EMPLOYEE PHOTO ===== -->
+                    <div class="flex flex-col justify-center items-center">
+                        <q-avatar class="w-20 h-20">
+                            <q-img :src="employee.photo ?? '/img/avatar.jpg'" />
+                        </q-avatar>
+                        <div>
+                            <q-btn
+                                flat
+                                icon="sym_r_photo_camera"
+                                class="ml-4 rounded-full bg-gray-500 text-white dark:bg-gray-50 dark:text-black relative bottom-8 -right-6"
+                                padding="xs xs"
+                                @click="openFileSelector"
+                            />
+                        </div>
+                    </div>
+                    <!-- ====== EMPLOYEE PHOTO ===== -->
+
                     <!-- ==== FIRST NAME & LAST NAME ==== -->
                     <div class="grid sm:grid-cols-2 gap-3">
                         <div>
@@ -178,10 +195,11 @@
     </q-dialog>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useResourceShow } from "@/composables/useResourceShow";
 import { useResourceUpdate } from "@/composables/useResourceUpdate";
 import CustomSelect from "@/components/CustomSelect.vue";
+import { useFileDialog } from "@vueuse/core";
 
 const props = defineProps({
     id: {
@@ -193,11 +211,50 @@ const emit = defineEmits(["updated"]);
 const open = defineModel("open");
 
 const { data: employee, fetch, loading } = useResourceShow("employees");
-const { update, updating, validation } = useResourceUpdate("employees");
+const { update, updating, validation } = useResourceUpdate("employees", {
+    config: {
+        data: {
+            _method: "PUT",
+        },
+        method: "POST",
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    },
+});
+
+const {
+    files,
+    open: openFileSelector,
+    reset,
+} = useFileDialog({
+    multiple: false,
+    accept: {
+        "image/jpeg": [".jpg", ".jpeg", ".png"],
+        "application/msword": [".jpg", ".png", ".jpeg"],
+    },
+});
+
+const getEmployeeImage = computed(() => {
+    if (files.value && files.value.length) {
+        return files.value[0];
+    }
+
+    return null;
+});
 
 const handleUpdate = async () => {
+    employee.value.photo = getEmployeeImage.value;
     await update(employee.value.id, employee.value);
+    resetForm();
     emit("updated");
+};
+
+const resetForm = () => {
+    employee.value = {};
+    validation.value = {};
+    open.value = false;
+    reset();
 };
 
 const handleClose = () => {
@@ -207,11 +264,19 @@ const handleClose = () => {
 };
 
 watch(
+    () => files.value,
+    (value) => {
+        if (files.value && files.value.length) {
+            employee.value.photo = URL.createObjectURL(files.value[0]);
+        }
+    }
+);
+
+watch(
     () => props.id,
     async (newId) => {
         if (newId) {
             await fetch(newId);
-            console.log(employee.value);
         }
     }
 );
