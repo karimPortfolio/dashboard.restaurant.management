@@ -223,7 +223,7 @@ const { files, open: openFileSelector, reset } = useFileDialog({
 });
 
 const handleCreate = async () => {
-    newEmployee.value.photo = files.value[0];
+    newEmployee.value.photo = files.value ? files.value[0] : null;
     await create(newEmployee.value);
     emit("created");
 };

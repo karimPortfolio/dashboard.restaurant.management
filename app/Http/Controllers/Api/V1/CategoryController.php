@@ -16,19 +16,26 @@ class CategoryController extends Controller
             ->with([
                 'parentCategory:id,name',
                 'createdBy:id,name',
+                'media'
             ])
-            ->get();
+            ->paginate(12);
 
         return CategoryResource::collection($categories);
     }
 
     public function store(CategoryRequest $request)
     {
+
         $category = Category::create([
             'name' => $request->name,
             'category_id' => $request->parent_category,
             'created_by' => auth()->id(),
         ]);
+
+        if ($request->hasFile('image')) {
+            $category->addMediaFromRequest('image')
+                ->toMediaCollection('categories');
+        }
 
         return new CategoryResource($category);
     }
@@ -49,6 +56,11 @@ class CategoryController extends Controller
             'name' => $request->name,
             'category_id' => $request->parent_category,
         ]);
+
+        if ($request->hasFile('image')) {
+            $category->addMediaFromRequest('image')
+                ->toMediaCollection('categories');
+        }
 
         return new CategoryResource($category);
     }

@@ -19,6 +19,10 @@ class CategoryResource extends JsonResource
             'id' => $this->whenHas('id'),
             'name' => $this->whenHas('name'),
             'parent_category' => CategoryResource::make($this->whenLoaded('parentCategory')),
+            'image' => $this->whenLoaded('media', function() {
+                $media = $this->getFirstMedia('categories');
+                return $media ? $media->getFullUrl() : null;
+             }),
             'created_by' => $this->whenLoaded('createdBy'),
             'created_at' => $this->whenHas('created_at', fn ($d) => Carbon::parse($d)->diffForHumans()),
         ];

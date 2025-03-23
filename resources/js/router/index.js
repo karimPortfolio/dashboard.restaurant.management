@@ -33,6 +33,11 @@ const router = createRouter({
                             name: "categories.index",
                             component: () => import("@/views/categories/IndexView.vue"),                        
                         },
+                        {
+                            path: "items",
+                            name: "items.index",
+                            component: () => import("@/views/items/IndexView.vue"),                        
+                        },
                     ]
                 },
                 

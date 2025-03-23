@@ -4,7 +4,7 @@
             <div
                 class="flex gap-2 items-center text-primary-800 dark:text-primary-300 mb-1"
             >
-                <q-icon name="sym_r_group" size="md" />
+                <q-icon :name="icon" size="md" />
                 <div class="text-2xl font-medium">{{ title }}</div>
             </div>
             <div class="text-xs text-gray-600 dark:text-gray-400">
@@ -24,6 +24,9 @@
 <script setup>
 defineProps({
     title: {
+        type: String,
+    },
+    icon: {
         type: String,
     },
     caption: {

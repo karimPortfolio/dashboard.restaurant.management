@@ -107,10 +107,12 @@ const drawerItems = [
     {
         label: "Categories",
         icon: "sym_r_category",
+        route: { name: "categories.index" },
     },
     {
         label: "Items",
         icon: "sym_r_fastfood",
+        route: { name: "items.index" }
     },
     {
         label: "Suppliers",

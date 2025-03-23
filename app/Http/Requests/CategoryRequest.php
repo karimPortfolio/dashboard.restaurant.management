@@ -24,6 +24,14 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'parent_category' => 'nullable|integer|exists:categories,id',
+            'image' => 'nullable|image|max:2048|mimes:jpeg,jpg,png',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'parent_category' => $this->input('parent_category.id'),
+        ]);
     }
 }

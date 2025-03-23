@@ -12,10 +12,11 @@
     />
     <!-- ============= // PAGE DIALOGS // ============ -->
 
-    <section class="px-4">
+    <q-page class="px-4">
         <!-- ==================== // PAGE HEADER //==================== -->
         <PageHeader
             title="Employees"
+            icon="sym_r_group"
             caption="Manage your employees"
             actionIcon="sym_r_add"
             actionLabel="Add Employee"
@@ -23,9 +24,9 @@
         />
         <!-- ==================== // PAGE HEADER //==================== -->
 
-        <div v-if="!loading" class="pt-16">
+        <template v-if="!loading">
             <div
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-14"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-14 pt-16"
             >
                 <q-card v-for="employee in data" :key="employee.id">
                     <q-card-section class="relative">
@@ -134,11 +135,13 @@
                     </q-card-actions>
                 </q-card>
             </div>
-        </div>
+        </template>
 
-        <div v-else class="pt-16">
-            <SkeletenLoading :count="6" />
-        </div>
+        <template v-else >
+            <div class="pt-16">
+                <SkeletenLoading :count="6" />
+            </div>
+        </template>
 
         <q-page-sticky
             v-if="!loading"
@@ -154,7 +157,7 @@
                 class="bg-primary text-white dark:bg-primary-300 dark:text-slate-800"
             />
         </q-page-sticky>
-    </section>
+    </q-page>
 </template>
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
