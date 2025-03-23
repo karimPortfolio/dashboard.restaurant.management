@@ -27,33 +27,37 @@
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-8"
                 >
-                    <q-card v-for="category in categories" :key="category.id" >
-                        <q-card-section class="p-0">
+                    <q-card v-for="category in categories" :key="category.id">
+                        <q-card-section class="p-0 relative">
                             <q-img
-                                :src="category.image ?? '/img/img-placeholder.jpeg'"
-                                basic
-                                class="h-40"
-                            />
-                        </q-card-section>
-                        <q-card-section
-                            class="flex justify-between items-center"
-                        >
-                            <div>
-                                <div class="text-secondary text-sm">
-                                    #000{{ category.id }}
-                                </div>
-                                <div class="text-center font-semibold">
-                                    {{ category.name }}
-                                </div>
-                            </div>
-                            <!-- ====== ACTIONS ======= -->
-                            <div>
+                                :src="
+                                    category.image ??
+                                    '/img/img-placeholder.jpeg'
+                                "
+                                class="h-48 rounded-t-xl"
+                            >
+                                <!-- Gradient Overlay -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"
+                                ></div>
+                            </q-img>
+                            <!-- Actions Menu -->
+                            <div class="absolute top-2 right-2">
                                 <ActionsMenu
                                     :category="category"
                                     :handleUpdate="handleUpdate"
                                 />
                             </div>
-                            <!-- ====== ACTIONS ======= -->
+                        </q-card-section>
+                        <q-card-section class="">
+                            <div>
+                                <div class="text-secondary text-sm">
+                                    #000{{ category.id }}
+                                </div>
+                                <div class="font-semibold">
+                                    {{ category.name }}
+                                </div>
+                            </div>
                         </q-card-section>
 
                         <q-card-section class="pt-0">
@@ -138,7 +142,7 @@ const {
     data: categoriesChunk,
     fetch,
     loading,
-    options
+    options,
 } = useResourceIndex("categories");
 
 const appendCategoriesChunks = () => {
@@ -151,21 +155,20 @@ const loadMore = async (page, done) => {
     if (isLoading.value) return;
     isLoading.value = true;
 
-    console.log('first log');
+    console.log("first log");
 
     if (
         categories.value.length === options.pagination.rowsNumber &&
         categories.value.length > 0
     ) {
-        console.log('second log');
-        
+        console.log("second log");
+
         done(true);
         isLoading.value = false;
         return;
     }
 
-    console.log('third log');
-    
+    console.log("third log");
 
     options.pagination.page = page;
     await fetch();
