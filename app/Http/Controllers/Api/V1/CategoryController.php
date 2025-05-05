@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::query()
             ->with([
@@ -18,7 +18,7 @@ class CategoryController extends Controller
                 'createdBy:id,name',
                 'media'
             ])
-            ->paginate(12);
+            ->paginate($request->get('per_page', 12));
 
         return CategoryResource::collection($categories);
     }

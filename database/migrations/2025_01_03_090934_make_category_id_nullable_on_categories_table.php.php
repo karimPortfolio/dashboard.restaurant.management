@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             $table->integer('category_id')->unsigned()->nullable()->change();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         });
     }
 
