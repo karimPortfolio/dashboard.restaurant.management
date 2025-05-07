@@ -3,8 +3,8 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\EmployeeController;
-use App\Http\Controllers\Api\V1\EmployeePositions;
-use App\Http\Controllers\Api\V1\EmployeeStatus;
+use App\Http\Controllers\Api\V1\EmployeePositionController;
+use App\Http\Controllers\Api\V1\EmployeeStatusController;
 use App\Http\Controllers\Api\V1\ItemController;
 use App\Http\Controllers\Api\V1\SupplierController;
 use Illuminate\Http\Request;
@@ -37,8 +37,8 @@ Route::prefix('v1')
 
             Route::apiResource('categories', CategoryController::class);
             Route::apiResource('employees', EmployeeController::class);
-            Route::get('employee-positions', EmployeePositions::class);
-            Route::get('employee-status', EmployeeStatus::class);
+            Route::get('employee-positions', EmployeePositionController::class)->name('employee-positions');
+            Route::get('employee-status', EmployeeStatusController::class)->name('employee-status');
             Route::apiResource('suppliers', SupplierController::class);
             Route::apiResource('items', ItemController::class);
         });

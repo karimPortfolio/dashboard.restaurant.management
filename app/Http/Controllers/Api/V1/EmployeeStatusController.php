@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EmployeeStatus extends Controller
+class EmployeeStatusController extends Controller
 {
     public function __invoke()
     {

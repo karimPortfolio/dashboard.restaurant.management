@@ -6,7 +6,7 @@ use App\Enums\EmployeePosition;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EmployeePositions extends Controller
+class EmployeePositionController extends Controller
 {
     public function __invoke()
     {
