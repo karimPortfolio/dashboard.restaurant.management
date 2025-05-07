@@ -19,7 +19,8 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            "full_name"=> $this->faker->firstName,
+            "first_name"=> $this->faker->firstName,
+            "last_name"=> $this->faker->lastName,
             "email"=> $this->faker->unique()->safeEmail,
             "phone"=> $this->faker->unique()->randomNumber(9),
             "role"=> "user",
