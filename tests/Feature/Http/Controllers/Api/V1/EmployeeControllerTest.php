@@ -26,7 +26,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employees = Employee::factory()->count(3)->create();
 
-        $response = $this->getJson('/api/v1/employees');
+        $response = $this->getJson(route('api.v1.employees.index'));
 
         $response->assertStatus(200)
             ->assertJsonCount(3, 'data');
@@ -62,7 +62,7 @@ class EmployeeControllerTest extends TestCase
             'photo' => UploadedFile::fake()->image('employee.jpg')
         ];
 
-        $response = $this->postJson('/api/v1/employees', $employeeData);
+        $response = $this->postJson(route('api.v1.employees.store'), $employeeData);
 
         $response->assertStatus(201)
             ->assertJsonStructure([
@@ -82,7 +82,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create();
 
-        $response = $this->getJson("/api/v1/employees/{$employee->id}");
+        $response = $this->getJson(route('api.v1.employees.show', $employee));
 
         $response->assertStatus(200)
             ->assertJson([
@@ -112,7 +112,7 @@ class EmployeeControllerTest extends TestCase
             'position' => EmployeePosition::DISHWASHER->toArray(),
         ];
 
-        $response = $this->putJson("/api/v1/employees/{$employee->id}", $updateData);
+        $response = $this->putJson(route('api.v1.employees.update', $employee), $updateData);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -127,7 +127,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/employees/{$employee->id}");
+        $response = $this->deleteJson(route('api.v1.employees.destroy', $employee));    
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('employees', ['id' => $employee->id]);
@@ -135,7 +135,7 @@ class EmployeeControllerTest extends TestCase
 
     public function test_validates_required_fields_for_store()
     {
-        $response = $this->postJson('/api/v1/employees', []);
+        $response = $this->postJson(route('api.v1.employees.store'), []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors([
@@ -157,7 +157,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create();
 
-        $response = $this->putJson("/api/v1/employees/{$employee->id}", []);
+        $response = $this->putJson(route('api.v1.employees.update', $employee), []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors([
@@ -177,7 +177,7 @@ class EmployeeControllerTest extends TestCase
 
     public function test_show_method_returns_404_if_employee_not_found()
     {
-        $response = $this->getJson('/api/v1/employees/999');
+        $response = $this->getJson(route('api.v1.employees.show', 999));
 
         $response->assertStatus(404)
             ->assertJson([
@@ -187,7 +187,7 @@ class EmployeeControllerTest extends TestCase
 
     public function test_update_method_returns_404_if_employee_not_found()
     {
-        $response = $this->putJson('/api/v1/employees/999', [
+        $response = $this->putJson(route('api.v1.employees.update', 999), [
             'first_name' => 'Updated FirstName',
             'last_name' => 'Updated LastName',
             'email' => $this->faker->email,
@@ -209,7 +209,7 @@ class EmployeeControllerTest extends TestCase
 
     public function test_delete_method_returns_404_if_employee_not_found()
     {
-        $response = $this->deleteJson('/api/v1/employees/999');
+        $response = $this->deleteJson(route('api.v1.employees.destroy', 999));
 
         $response->assertStatus(404)
             ->assertJson([
